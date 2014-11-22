@@ -2542,7 +2542,7 @@ var ngModelDirective = ['$rootScope', function($rootScope) {
             if (modelCtrl.$touched) return;
 
             if ($rootScope.$$phase) {
-              scope.$evalAsync(modelCtrl.$setTouched);
+              modelCtrl.$setTouched();
             } else {
               scope.$apply(modelCtrl.$setTouched);
             }

@@ -1280,7 +1280,7 @@ describe('ngModel', function() {
     dealoc(element);
   }));
 
-  it('should digest asynchronously on "blur" event if a apply is already in progress',
+  it('should not trigger another digest during a "blur" event if a digest is in progress',
       inject(function($compile, $rootScope) {
 
     var element = $compile('<form name="myForm">' +
@@ -1289,18 +1289,14 @@ describe('ngModel', function() {
     var inputElm = element.find('input');
     var control = $rootScope.myForm.myControl;
 
+    expect(control.$touched).toBe(false);
+    expect(control.$untouched).toBe(true);
+
     $rootScope.$apply(function() {
-      expect(control.$touched).toBe(false);
-      expect(control.$untouched).toBe(true);
-
       browserTrigger(inputElm, 'blur');
-
-      expect(control.$touched).toBe(false);
-      expect(control.$untouched).toBe(true);
+      expect(control.$touched).toBe(true);
+      expect(control.$untouched).toBe(false);
     });
-
-    expect(control.$touched).toBe(true);
-    expect(control.$untouched).toBe(false);
 
     dealoc(element);
   }));
